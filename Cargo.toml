@@ -1,0 +1,48 @@
+[workspace]
+resolver = "3"
+members = ["crates/server", "crates/nextcloud-live", "crates/testkit"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.90"
+license = "MIT OR Apache-2.0"
+authors = ["Marco Montanari and the craft-live contributors"]
+repository = "https://github.com/sirmmo/craft-live"
+publish = false
+
+[workspace.dependencies]
+craft-live = { path = "crates/server" }
+craft-live-testkit = { path = "crates/testkit" }
+axum = { version = "0.7.9", features = ["ws", "macros", "multipart"] }
+tokio = { version = "1.53", features = ["rt-multi-thread", "macros", "net", "sync", "time", "fs", "signal", "io-util"] }
+reqwest = { version = "0.12.28", default-features = false, features = ["rustls-tls-webpki-roots", "rustls-tls-native-roots", "json", "multipart"] }
+yrs = "0.28"
+rsa = { version = "0.9", features = ["sha2"] }
+rand_core = { version = "0.6", features = ["getrandom"] }
+sha2 = "0.10"
+hmac = "0.12"
+toml = "0.8"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+base64 = "0.22"
+getrandom = "0.3"
+quick-xml = "=0.38.4"
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+tokio-tungstenite = "0.24"
+tungstenite = { version = "0.24", features = ["rustls-tls-webpki-roots", "rustls-tls-native-roots"] }
+ureq = { version = "3.4", default-features = false, features = ["rustls"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "env-filter", "ansi"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+dbg_macro = "warn"
+too_many_arguments = "allow"
+type_complexity = "allow"
+large_enum_variant = "allow"
+
+[profile.release]
+opt-level = 3

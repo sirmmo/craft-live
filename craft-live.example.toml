@@ -1,0 +1,52 @@
+# craft-live configuration. Every key is optional; CRAFT_LIVE_* environment variables override
+# them (docs/deploy.md). Check it with `craft-live check --config craft-live.toml`.
+
+# Where to listen. Put a TLS reverse proxy in front (docs/deploy.md).
+listen = "0.0.0.0:9980"
+
+# The address browsers and Nextcloud use. Serve craft-live at the root of its own host on 443:
+# Nextcloud drops a path or a non-default port from the editor's address.
+public_url = "https://live.example.com"
+
+# Room states, sessions and the proof keys (keep it; back it up).
+data_dir = "/var/lib/craft-live"
+
+# The Nextcloud servers allowed to open files here (their base URLs).
+wopi_hosts = ["https://cloud.example.com"]
+
+# Sign requests to Nextcloud with WOPI proof keys (and publish the keys in the discovery).
+proof_keys = true
+
+# Check Nextcloud's TLS certificate (turn off only for a test setup with a self-signed one).
+verify_tls = true
+
+# Let the desktop apps (nextcloud-live add-in) open files, proving the person's Nextcloud
+# identity with their app password (docs/design.md §8).
+desktop_sessions = true
+
+# The version /hosting/capabilities reports (Nextcloud gates features on it).
+compat_version = "25.04.0.0"
+
+# Each app's web build: the folder with its index.html (each app's packaging/web output).
+# An app left out isn't in the discovery: Nextcloud keeps using its other editor for those files.
+[apps]
+gridcraft = "/srv/craft-live/apps/gridcraft"
+wordcraft = "/srv/craft-live/apps/wordcraft"
+deckcraft = "/srv/craft-live/apps/deckcraft"
+
+[autosave]
+updates = 200               # save after this many edits
+idle_secs = 30              # … or this long without an edit
+max_secs = 300              # … and at least this often while people edit
+last_editor_idle_secs = 5.0 # one editor left: save soon, before they go
+retry_secs = 30
+timeout_secs = 120          # how long a client may take to hand over the file
+
+[limits]
+max_file_mb = 100
+max_rooms = 1000
+max_connections_per_room = 100
+session_hours = 10          # when Nextcloud gives no token expiry (it sends 0), and desktop sessions
+lock_refresh_secs = 600
+close_grace_secs = 30
+seed_lease_secs = 120

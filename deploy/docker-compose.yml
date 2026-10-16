@@ -1,0 +1,70 @@
+# Nextcloud with Nextcloud Office (richdocuments) using craft-live, behind Caddy (automatic TLS).
+# Replace cloud.example.com and live.example.com with your names (both pointing at this host),
+# put the craft apps' web builds in ./apps/{gridcraft,wordcraft,deckcraft}, then:
+#   docker compose up -d
+#   docker compose exec -u www-data nextcloud php occ app:install richdocuments
+#   docker compose exec -u www-data nextcloud php occ config:app:set richdocuments wopi_url --value=https://live.example.com
+#   docker compose exec -u www-data nextcloud php occ config:app:set richdocuments wopi_allowlist --value=172.28.0.0/16
+#   docker compose exec -u www-data nextcloud php occ richdocuments:activate-config
+# (docs/deploy.md explains each step.)
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: nextcloud
+      POSTGRES_PASSWORD: change-me
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks: [office]
+
+  nextcloud:
+    image: nextcloud:30-apache
+    restart: unless-stopped
+    depends_on: [db]
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: nextcloud
+      POSTGRES_PASSWORD: change-me
+      NEXTCLOUD_TRUSTED_DOMAINS: cloud.example.com
+      OVERWRITEPROTOCOL: https
+      TRUSTED_PROXIES: 172.28.0.0/16
+    volumes:
+      - nextcloud:/var/www/html
+    networks: [office]
+
+  craft-live:
+    build: ..
+    # image: ghcr.io/sirmmo/craft-live:0.1.0
+    restart: unless-stopped
+    environment:
+      CRAFT_LIVE_PUBLIC_URL: https://live.example.com
+      CRAFT_LIVE_WOPI_HOSTS: https://cloud.example.com
+      CRAFT_LIVE_LOG: info
+    volumes:
+      - craft-live:/data
+      - ./apps:/apps:ro
+    networks: [office]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy:/data
+    networks: [office]
+
+networks:
+  office:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+volumes:
+  db:
+  nextcloud:
+  craft-live:
+  caddy:

@@ -1,0 +1,25 @@
+[package]
+name = "craft-live-testkit"
+description = "Test support for craft-live: a fake Nextcloud (WOPI host, WebDAV, OCS, login flow) and y-websocket test clients"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[dependencies]
+axum.workspace = true
+tokio.workspace = true
+yrs.workspace = true
+rsa.workspace = true
+rand_core.workspace = true
+sha2.workspace = true
+serde_json.workspace = true
+base64.workspace = true
+futures-util.workspace = true
+tokio-tungstenite.workspace = true
+reqwest.workspace = true
+
+[lints]
+workspace = true

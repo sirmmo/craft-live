@@ -1,0 +1,27 @@
+[package]
+name = "nextcloud-live"
+description = "Live co-editing of Nextcloud files for the craft apps (GridCraft, WordCraft, DeckCraft): a protocol-2 transport add-in that joins craft-live rooms over y-websocket"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[dependencies]
+serde_json.workspace = true
+base64.workspace = true
+getrandom.workspace = true
+quick-xml.workspace = true
+tungstenite.workspace = true
+ureq.workspace = true
+
+[dev-dependencies]
+reqwest.workspace = true
+craft-live.workspace = true
+craft-live-testkit.workspace = true
+tokio.workspace = true
+yrs.workspace = true
+
+[lints]
+workspace = true

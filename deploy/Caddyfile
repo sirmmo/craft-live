@@ -1,0 +1,9 @@
+cloud.example.com {
+	reverse_proxy nextcloud:80
+}
+
+# craft-live at the root of its own host (Nextcloud drops a path or a port from the editor's
+# address). WebSockets (/ws/…) pass through reverse_proxy as they are.
+live.example.com {
+	reverse_proxy craft-live:9980
+}

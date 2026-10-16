@@ -1,0 +1,142 @@
+{
+  "id": "org.craft.nextcloud-live",
+  "name": "Live (Nextcloud)",
+  "version": "0.1.0",
+  "description": "Edit Nextcloud files live with the people who have them open in Nextcloud Office or in a craft app, through a craft-live server. Needs craft plugin protocol 2.",
+  "author": "Marco Montanari and the craft-live contributors",
+  "homepage": "https://github.com/sirmmo/craft-live",
+  "apps": [
+    "gridcraft",
+    "wordcraft",
+    "deckcraft"
+  ],
+  "run": {
+    "command": "./nextcloud-live"
+  },
+  "collab": {
+    "transport": "nextcloud-live",
+    "label": "Live (Nextcloud)"
+  },
+  "requires": {
+    "protocol": ">=2.0",
+    "features": [
+      "dialogs",
+      "open",
+      "push",
+      "collab"
+    ],
+    "addins": [
+      {
+        "id": "org.craft.nextcloud",
+        "github": "sirmmo/craft-nextcloud",
+        "optional": true,
+        "why": "Shares its Nextcloud accounts, and Share Live works on the files it opened"
+      }
+    ]
+  },
+  "commands": [
+    {
+      "id": "open",
+      "label": "Open Live",
+      "description": "Open a Nextcloud file and edit it live with everyone who has it open",
+      "params": "{account?, path?, id?} or a dialog"
+    },
+    {
+      "id": "share",
+      "label": "Share Live",
+      "description": "Make the open document live as its Nextcloud file (or a given one)",
+      "params": "{account?, path?} or {fields}"
+    },
+    {
+      "id": "join",
+      "label": "Join Live",
+      "description": "Join a file's live session from its Nextcloud link (…/f/<id>)",
+      "params": "{link, account?} or {fields}"
+    },
+    {
+      "id": "leave",
+      "label": "Leave Live Session",
+      "description": "Leave the live session (the document stays open)",
+      "params": "{room?}"
+    },
+    {
+      "id": "status",
+      "label": "Live Status",
+      "description": "The live sessions and who's in them",
+      "params": "{}"
+    },
+    {
+      "id": "connect",
+      "label": "Connect to Nextcloud",
+      "description": "Sign in to a Nextcloud (Login Flow v2)",
+      "params": "{server} or {fields}"
+    },
+    {
+      "id": "finishLogin",
+      "label": "Finish Sign-in",
+      "description": "Continue the sign-in (from its dialog)",
+      "params": "{server, login, token, endpoint}"
+    },
+    {
+      "id": "chooseAccount",
+      "label": "Choose Account",
+      "description": "Pick the account to browse (from a dialog)",
+      "params": "{id?}"
+    },
+    {
+      "id": "settings",
+      "label": "Live Settings",
+      "description": "The craft-live server of each Nextcloud",
+      "params": "{}"
+    },
+    {
+      "id": "saveSettings",
+      "label": "Save Live Settings",
+      "description": "Store the settings (from the Settings dialog)",
+      "params": "{fields}"
+    },
+    {
+      "id": "dismiss",
+      "label": "Close",
+      "description": "Close a dialog",
+      "params": "{}"
+    }
+  ],
+  "ui": {
+    "ribbon": [
+      {
+        "tab": "Live",
+        "group": "Nextcloud",
+        "buttons": [
+          {
+            "command": "open",
+            "icon": "folder"
+          },
+          {
+            "command": "share",
+            "icon": "share"
+          },
+          {
+            "command": "join",
+            "icon": "link"
+          },
+          {
+            "command": "leave",
+            "icon": "minus",
+            "size": "small"
+          },
+          {
+            "command": "status",
+            "icon": "info",
+            "size": "small"
+          },
+          {
+            "command": "settings",
+            "icon": "settings",
+            "size": "small"
+          }
+        ]
+      }
+    ]
+  }
+}
